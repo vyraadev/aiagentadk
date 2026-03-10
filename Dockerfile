@@ -6,13 +6,3 @@ COPY . .
 ENV PORT=8080
 EXPOSE 8080
 CMD ["python", "main.py"]
-```
-
----
-
-## `.gitignore`
-```
-.env
-__pycache__/
-*.pyc
-.DS_Store
