@@ -1,7 +1,11 @@
 import os
 import google.generativeai as genai
 
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+api_key = os.environ.get("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY environment variable is not set")
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel(
     model_name="gemini-2.0-flash",
     system_instruction=(
@@ -12,5 +16,8 @@ model = genai.GenerativeModel(
 )
 
 def answer_question(question: str) -> str:
-    response = model.generate_content(question)
-    return response.text
+    try:
+        response = model.generate_content(question)
+        return response.text
+    except Exception as e:
+        raise Exception(f"Gemini API error: {str(e)}")
